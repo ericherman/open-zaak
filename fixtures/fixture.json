@@ -1,0 +1,36 @@
+[
+    {
+        "model": "vng_api_common.jwtsecret",
+        "pk": 1,
+        "fields": {
+            "identifier": "zgw_api_tests-Gvvw2jXBk3i3",
+            "secret": "VJnbziYxgRowf5KWPjXfP02g6aWPy6Kd"
+        }
+    },
+    {
+        "model": "vng_api_common.jwtsecret",
+        "pk": 2,
+        "fields": {
+            "identifier": "zgw_api_tests_limited-d0sVJ8FQa9W7",
+            "secret": "TIwnmLEywLhYTn5jJRymdh6AH2skrCry"
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$150000$SMtRRvy97oFv$aSBEArz83ZRBj++iUbeNySumSaSwGWKtm08+aDNzAUU=",
+            "last_login": "2019-08-22T12:21:44.435Z",
+            "is_superuser": true,
+            "username": "test",
+            "first_name": "",
+            "last_name": "",
+            "email": "test@test.nl",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2019-08-22T08:31:47.563Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

@@ -1,63 +1,52 @@
 dist: xenial
 
-language: python
+sudo: required
 
-cache: pip
+language: python
 
 python: 3.7
 
-services:
-  - postgresql
-  - docker
-
-addons:
-  postgresql: "10"
-  apt:
-    packages:
-    - postgresql-10-postgis-2.4
-
 env:
   global:
-  - DJANGO_SETTINGS_MODULE=openzaak.conf.test
-  - SECRET_KEY=dummy
-  - DB_PASSWORD=
-  - DB_USER=postgres
-
-before_install:
-  - sudo apt-get update
-  - sudo apt-get install libgdal-dev gdal-bin
-  - gdal-config --version
-
-install:
-  - pip install -r requirements/test.txt
-  - pip install codecov isort black
-  - npm ci
-  - npm run build
-
-before_script:
-  - psql -U postgres -c "create extension postgis"
+    - DB_PASSWORD=
+    - DB_USER=postgres
+    - SECRET_KEY=dummy
 
 jobs:
   include:
-    # Run jobs in parallel in stage Tests
-    - stage: Tests
-      name: "Django tests"
+    - stage: Django tests
+      services:
+        - postgresql
+      addons:
+        postgresql: "10"
+        apt:
+          packages:
+          - postgresql-10-postgis-2.4
+      env:
+        - DJANGO_SETTINGS_MODULE=openzaak.conf.test
+      before_install:
+        - sudo apt-get update
+        - sudo apt-get install libgdal-dev gdal-bin
+        - gdal-config --version
+      install:
+        - pip install -r requirements/test.txt
+        - pip install codecov
+        - npm ci
+        - npm run build
+      before_script:
+        - psql -U postgres -c "create extension postgis"
       script:
         - python src/manage.py collectstatic --noinput --link
         - coverage run src/manage.py test src
+      after_success:
+        - codecov
 
     - name: isort
-      before_install: skip
-      install:
-        - pip install isort
-      before_script: skip
+      install: pip install isort
       script: isort --recursive --check-only --diff .
 
     - name: black
-      before_install: skip
-      install:
-        - pip install black
-      before_script: skip
+      install: pip install black
       script: black --check src
 
     - name: Test docker image build
@@ -66,7 +55,12 @@ jobs:
       before_script: skip
       script: docker build .
 
-    # TODO: second stage to push resulting image
-
-after_success:
-  - codecov
+    - stage: Newman tests
+      install:
+        - npm install newman
+      script:
+        - docker-compose -f docker-compose-travis.yml up -d
+        - bin/postman_tests_ngrok.sh
+      after_script:
+        - docker-compose stop
+        - docker-compose rm -f
