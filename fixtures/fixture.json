@@ -3,16 +3,16 @@
         "model": "vng_api_common.jwtsecret",
         "pk": 1,
         "fields": {
-            "identifier": "zgw_api_tests-Gvvw2jXBk3i3",
-            "secret": "VJnbziYxgRowf5KWPjXfP02g6aWPy6Kd"
+            "identifier": "zgw_api_tests",
+            "secret": "secret"
         }
     },
     {
         "model": "vng_api_common.jwtsecret",
         "pk": 2,
         "fields": {
-            "identifier": "zgw_api_tests_limited-d0sVJ8FQa9W7",
-            "secret": "TIwnmLEywLhYTn5jJRymdh6AH2skrCry"
+            "identifier": "zgw_api_tests_limited",
+            "secret": "secret_limited"
         }
     },
     {
