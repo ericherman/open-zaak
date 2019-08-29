@@ -14,7 +14,8 @@ env:
 
 jobs:
   include:
-    - stage: Django tests
+    - stage: Tests
+      name: Django tests
       services:
         - postgresql
       addons:
